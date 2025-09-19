@@ -1,12 +1,30 @@
-from rest_framework import viewsets, status
-from apps.equipments.serializer import *
-from apps.equipments.models import *
+from rest_framework.authentication import TokenAuthentication, SessionAuthentication
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.permissions import IsAuthenticated
+from apps.login.permissions import IsAdminUser
+from rest_framework import viewsets, filters
+from .filters import WeaponFilter
+from .serializer import *
+from .models import *
 
 
 class WeaponViewSet(viewsets.ModelViewSet):
     queryset = Weapon.objects.all().order_by('id')
     serializer_class = WeaponSerializer
+
+    authentication_classes = (SessionAuthentication, TokenAuthentication)
+
     http_method_names = ['get', 'post', 'put', 'delete']
+
+    filter_backends = [filters.SearchFilter, DjangoFilterBackend]
+    search_fields = ['weapon_name']
+    filterset_class = WeaponFilter
+
+    def get_permissions(self):
+        if self.action != "retrive" and self.action != "list":
+            return [IsAdminUser()]
+        
+        return [IsAuthenticated()]
 
 
 class WeaponModViewSet(viewsets.ModelViewSet):

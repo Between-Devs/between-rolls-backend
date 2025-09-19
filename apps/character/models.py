@@ -75,7 +75,7 @@ class Skill(models.Model):
     will = models.JSONField(default=get_default_skill, blank=True)
 
     def __str__(self):
-        return f"Skils of {self.character.name}"
+        return f"Skills of {self.character.name}"
 
 
 class Origin(models.Model):

@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'apps.character.apps.CharacterConfig',
     'apps.abilities.apps.AbilitiesConfig',
     'apps.login.apps.LoginConfig',
+    'django_filters',
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',

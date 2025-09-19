@@ -1,25 +1,24 @@
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 from rest_framework.authtoken.models import Token
-from rest_framework.decorators import api_view, authentication_classes
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import viewsets, status
-from apps.login.serializers import *
-from apps.login.models import *
+from .permissions import *
+from .serializers import *
+from .models import *
+
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all().order_by('id')
     serializer_class = UserSerializer
     authentication_classes = (TokenAuthentication, SessionAuthentication)
+    permission_classes = [IsAdminUser]
     http_method_names = ['get', 'post', 'put', 'delete']
 
     def list(self, request, *args, **kwargs):
         try:
-            user: CustomUser = request.user.custom_user
-
-            if user.level != 0:
-                return Response({'error': 'Level not allowed'}, status=status.HTTP_403_FORBIDDEN)
-
-            serializer: UserSerializer = UserSerializer(self.queryset, many=True)
+            serializer: UserSerializer = UserSerializer(
+                self.queryset, many=True)
 
             return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -70,5 +69,5 @@ def login(request) -> Response:
     except CustomUser.DoesNotExist:
         return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
 
-    except Exception as e:return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
