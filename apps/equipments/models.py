@@ -83,7 +83,7 @@ class Ammo(models.Model):
     spaces = models.IntegerField(null=False, blank=False)
 
 
-class WeponMods(models.Model):
+class WeaponMods(models.Model):
     WEAPON_TYPES = (
         ('MS', 'Melee and Shooting'),
         ('FW', 'Fire Weapons'),

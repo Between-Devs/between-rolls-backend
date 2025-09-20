@@ -10,7 +10,7 @@ class WeaponSerializer(serializers.ModelSerializer):
 
 class WeaponModSerializer(serializers.ModelSerializer):
     class Meta:
-        model = WeponMods
+        model = WeaponMods
         fields = '__all__'
 
 

@@ -6,5 +6,5 @@ class UserSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source='user.username', read_only=True)
     class Meta:
         model = CustomUser
-        fields = '__all__'
+        fields = ['id', 'username', 'level']
     
